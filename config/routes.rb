@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :inventories
+  resources :orders
+  resources :menu_items
+  resources :reservations
+  resources :tables
   resources :reviews
   resources :staff_schedules
   resources :bookings
@@ -11,5 +16,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  root "users"
+  # root "posts#index"
 end
