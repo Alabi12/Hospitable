@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_19_231802) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_19_233801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_keys", force: :cascade do |t|
+    t.string "api_key"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_logs", force: :cascade do |t|
+    t.bigint "api_key_id", null: false
+    t.json "request_details"
+    t.float "response_time"
+    t.datetime "timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_key_id"], name: "index_api_logs_on_api_key_id"
+  end
 
   create_table "bookings", force: :cascade do |t|
     t.bigint "room_id", null: false
@@ -24,6 +41,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_231802) do
     t.datetime "updated_at", null: false
     t.index ["guest_id"], name: "index_bookings_on_guest_id"
     t.index ["room_id"], name: "index_bookings_on_room_id"
+  end
+
+  create_table "check_ins", force: :cascade do |t|
+    t.bigint "guest_id", null: false
+    t.datetime "check_in_time"
+    t.string "digital_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_check_ins_on_guest_id"
+  end
+
+  create_table "developers", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "guests", force: :cascade do |t|
@@ -45,6 +77,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_231802) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "loyalty_programs", force: :cascade do |t|
+    t.bigint "guest_id", null: false
+    t.integer "points_balance"
+    t.string "membership_tier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_loyalty_programs_on_guest_id"
+  end
+
   create_table "menu_items", force: :cascade do |t|
     t.string "item_name"
     t.text "description"
@@ -52,6 +93,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_231802) do
     t.integer "popularity_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "offers", force: :cascade do |t|
+    t.bigint "guest_id", null: false
+    t.text "offer_details"
+    t.datetime "expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_offers_on_guest_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -121,8 +171,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_231802) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "api_logs", "api_keys"
   add_foreign_key "bookings", "guests"
   add_foreign_key "bookings", "rooms"
+  add_foreign_key "check_ins", "guests"
+  add_foreign_key "loyalty_programs", "guests"
+  add_foreign_key "offers", "guests"
   add_foreign_key "orders", "menu_items"
   add_foreign_key "orders", "reservations"
   add_foreign_key "reservations", "guests"

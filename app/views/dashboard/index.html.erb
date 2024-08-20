@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hospitable Dashboard</title>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">Hospitable Dashboard</h1>
+
+    <div class="bg-white p-4 shadow-md rounded-lg mb-4">
+      <h2 class="text-2xl font-semibold mb-2">Navigation</h2>
+      <ul class="list-disc pl-5">
+        <li><%= link_to 'All Tables', tables_path, class: "text-blue-500 hover:underline" %></li>
+        <li><%= link_to 'All Developers', developers_path, class: "text-blue-500 hover:underline" %></li>
+        <li><%= link_to 'All API Keys', api_keys_path, class: "text-blue-500 hover:underline" %></li>
+      </ul>
+    </div>
+
+    <div class="bg-white p-4 shadow-md rounded-lg">
+      <h2 class="text-2xl font-semibold mb-2">Overview</h2>
+      <p>Welcome to the Hospitable Dashboard. Use the navigation links above to access different sections of the application.</p>
+      <!-- Additional overview or statistics can be added here -->
+    </div>
+  </div>
+</body>
+</html>
